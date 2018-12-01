@@ -1,6 +1,6 @@
 {
-  "name": "cems-logger-javascript2",
-  "version": "1.0.0",
+  "name": "@bbellovic/cems-logger-js",
+  "version": "1.2.0",
   "description": "",
   "main": "dist/cjs/index.js",
   "typings": "dist/cjs/index.d.ts",
@@ -15,7 +15,13 @@
   "files": [
     "lib"
   ],
-  "author": "",
+  "author": "Branislav Bellovič <b.bellovic@gmail.com> (https://github.com/bbello25)",
+  "repository": {
+    "url": "https://github.com/bbello25/cems-logger-js.git"
+  },
+  "keywords": [
+    "javascript, server error logging, cems"
+  ],
   "license": "ISC",
   "devDependencies": {
     "gzip-cli": "^0.1.3",
