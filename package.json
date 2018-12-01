@@ -13,7 +13,7 @@
     "build:umd:min": "cd dist/umd && uglifyjs --compress --mangle  --comments --o CemsLogger.min.js -- CemsLogger.js && gzip CemsLogger.min.js output=CemsLogger.min.js.gz"
   },
   "files": [
-    "lib"
+    "dist"
   ],
   "author": "Branislav Bellovič <b.bellovic@gmail.com> (https://github.com/bbello25)",
   "repository": {
