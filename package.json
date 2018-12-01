@@ -1,0 +1,26 @@
+{
+  "name": "cems-logger-javascript2",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/cjs/index.js",
+  "typings": "dist/cjs/index.d.ts",
+  "scripts": {
+    "build": "npm run build:es2015 && npm run build:esm && npm run build:cjs && npm run build:umd && npm run build:umd:min",
+    "build:es2015": "tsc --module es2015 --target es2015 --outDir dist/es2015",
+    "build:esm": "tsc --module es2015 --target es5 --outDir dist/esm",
+    "build:cjs": "tsc --module commonjs --target es5 --outDir dist/cjs",
+    "build:umd": "rollup dist/esm/index.js --format umd --name CemsLogger --sourceMap --output dist/umd/CemsLogger.js",
+    "build:umd:min": "cd dist/umd && uglifyjs --compress --mangle  --comments --o CemsLogger.min.js -- CemsLogger.js && gzip CemsLogger.min.js output=CemsLogger.min.js.gz"
+  },
+  "files": [
+    "lib"
+  ],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "gzip-cli": "^0.1.3",
+    "rollup": "^0.67.3",
+    "typescript": "^3.2.1",
+    "uglify-js": "^3.4.9"
+  }
+}
