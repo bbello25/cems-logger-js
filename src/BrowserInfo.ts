@@ -1,5 +1,5 @@
 export class BrowserInfo {
-  static browserProperties() {
+  public static browserProperties() {
     const agent = header.join(" ");
     return {
       os: matchItem(agent, dataos),
@@ -47,13 +47,13 @@ const databrowser = [
 ];
 
 function matchItem(stringa: string, data: any) {
-  var i = 0,
-    j = 0,
-    regex,
-    regexv,
-    match,
-    matches,
-    version;
+  let i = 0;
+  let j = 0;
+  let regex;
+  let regexv;
+  let match;
+  let matches;
+  let version;
 
   for (i = 0; i < data.length; i += 1) {
     regex = new RegExp(data[i].value, "i");
@@ -68,7 +68,9 @@ function matchItem(stringa: string, data: any) {
         }
       }
       if (matches) {
-        if (typeof matches === "string") matches = matches.split(/[._]+/);
+        if (typeof matches === "string") {
+          matches = matches.split(/[._]+/);
+        }
         for (j = 0; j < matches.length; j += 1) {
           if (j === 0) {
             version += matches[j] + ".";

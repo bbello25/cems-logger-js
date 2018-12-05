@@ -1,20 +1,54 @@
+import { CemsSession } from "./CemsSession";
+import { InitializationError } from "./InitializationError";
+
+let instance: CemsLogger;
+
+let ip = "";
+fetch("https://api.ipify.org/?format=json")
+  .then(res => res.json)
+  .then((res: any) => (ip = res.ip));
+
+const defaultOptions = {
+  apiKey: "",
+  appName: "unknown",
+  email: "",
+  endPointUrl: "http://localhost:5000/",
+  ip: "unknown"
+};
+
 export class CemsLogger {
-  private static instance: CemsLogger;
+  public static getLogger(): CemsLogger {
+    return instance;
+  }
 
-  private readonly endPointUrl: string | undefined;
-  private readonly apiKey!: string;
+  public static initLogger(options: any): CemsLogger {
+    instance = new CemsLogger(options);
+    return CemsLogger.getLogger();
+  }
+  private readonly endPointUrl: string;
+  private readonly apiKey: string;
+  private readonly appName: string;
+  private readonly email: string;
+  private session: CemsSession;
 
-  constructor(endPointURL: string, apiKey: string) {
-    if (CemsLogger.instance) {
-      return CemsLogger.instance;
+  private constructor(options: any) {
+    this.endPointUrl = options.endPointUrl || defaultOptions;
+    this.endPointUrl += "api/log/";
+    if (!options.apiKey) {
+      throw new InitializationError(`ApiKey must be defined`);
     }
-    CemsLogger.instance = this;
-    this.endPointUrl = `http://${endPointURL}/api/log/`;
-    this.apiKey = apiKey;
+    this.apiKey = options.apiKey;
+    this.appName = options.appName || defaultOptions.appName;
+    this.email = options.appName || undefined;
+    this.session = new CemsSession();
     this.healthCheck();
   }
 
-  healthCheck(): void {
+  /**
+   *  healthCheck function
+   */
+
+  public healthCheck(): void {
     fetch(this.endPointUrl + "healthCheck", {
       headers: {
         Accept: "application/json, text/plain, */*",
@@ -22,12 +56,12 @@ export class CemsLogger {
         "api-key": this.apiKey
       }
     })
-      .then(res => console.log(res))
-      .catch(reason => console.log(reason));
+      .then(res => console.log("Logger is running"))
+      .catch(reason => console.error(reason));
   }
 
-  sendLog(error: Error, name: string): void {
-    const errorLog = this.errorLogFromError(error, name);
+  public sendLog(error: Error): void {
+    const errorLog = this.errorLogFromError(error);
 
     fetch(this.endPointUrl + "browserError", {
       method: "post",
@@ -38,18 +72,18 @@ export class CemsLogger {
       },
       body: JSON.stringify(errorLog)
     })
-      .then(res => console.log(res))
-      .catch(reason => console.log(reason));
+      .then(res => console.log("Logger is running"))
+      .catch(reason => console.error(reason));
   }
 
-  errorLogFromError(error: Error, name: string) {
+  public errorLogFromError(error: Error) {
     return {
       name: error.name,
       source: name,
       message: error.message,
       stacktrace: error.stack,
-      timestamp: new Date().toLocaleString()
-      //sessionData: this._session.getClientInfo()
+      timestamp: new Date().toLocaleString(),
+      sessionData: this.session.getClientInfo()
     };
   }
 }

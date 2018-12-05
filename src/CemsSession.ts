@@ -1,6 +1,6 @@
 import { BrowserInfo } from "./BrowserInfo";
 
-export class name {
+export class CemsSession {
   private sid: string = "unknown";
   private sessionStartTime: Date;
   private browserProperties: BrowserInfo;
@@ -19,7 +19,7 @@ export class name {
     this.screenProperties = this.getscreenProperties();
   }
 
-  getscreenProperties(): any {
+  public getscreenProperties(): any {
     return {
       screenScreenW: window.screen.width,
       screenScreenH: window.screen.height,
@@ -32,7 +32,7 @@ export class name {
     };
   }
 
-  getClientInfo(): any {
+  public getClientInfo(): any {
     return {
       sid: this.sid,
       sessionStartTime: this.sessionStartTime,

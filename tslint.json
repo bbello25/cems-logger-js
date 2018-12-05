@@ -1,0 +1,10 @@
+{
+  "extends": ["tslint:latest", "tslint-config-prettier"],
+  "rules": {
+    "max-line-length": {
+      "options": [140]
+    },
+    "object-literal-sort-keys": false,
+    "no-console": false
+  }
+}

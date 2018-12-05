@@ -2,12 +2,22 @@
 <html>
   <head>
     <meta charset="UTF-8" />
-    <title>title</title>
+    <title>Demo</title>
   </head>
   <body>
-    <script src="../dist/umd/CemsLogger.js"></script>
+    <script src="./node_modules/@bbellovic/cems-logger-js/dist/umd/CemsLogger.js"></script>
     <script>
-      const logger = new CemsLogger('localhost:5000', 'o7zt5r172a')
+      const logger = CemsLogger.initLogger({
+        endPointUrl: 'https://cems.sde.cz:5443/',
+        apiKey: 'oifkk97xcl',
+        appName: 'demo app',
+        email: 'b.bellovic@gmail.com'
+      })
+      try {
+        throw new Error('Demo app')
+      } catch (e) {
+        logger.sendLog(e)
+      }
     </script>
   </body>
 </html>
