@@ -33,10 +33,12 @@ export class CemsSession {
   }
 
   public getClientInfo(): any {
-
+    const currentTime = new Date();
+    const sesionDuration =
+      (currentTime.getTime() - this.sessionStartTime.getTime()) / 1000;
     return {
       sid: this.sid,
-      sessionStartTime: this.sessionStartTime,
+      sessionDuration: sesionDuration,
       browserProperties: this.browserProperties,
       screenProperties: this.screenProperties
     };

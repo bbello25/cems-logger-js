@@ -1,4 +1,3 @@
-import { cat } from "shelljs";
 import * as StackTrace from "stacktrace-js";
 import { CemsSession } from "./CemsSession";
 import { InitializationError } from "./InitializationError";
