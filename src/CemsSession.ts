@@ -33,6 +33,7 @@ export class CemsSession {
   }
 
   public getClientInfo(): any {
+
     return {
       sid: this.sid,
       sessionStartTime: this.sessionStartTime,

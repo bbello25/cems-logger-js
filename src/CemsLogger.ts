@@ -1,3 +1,5 @@
+import { cat } from "shelljs";
+import * as StackTrace from "stacktrace-js";
 import { CemsSession } from "./CemsSession";
 import { InitializationError } from "./InitializationError";
 
@@ -36,7 +38,6 @@ export class CemsLogger {
     this.appName = options.appName || defaultOptions.appName;
     this.email = options.email || undefined;
     this.session = new CemsSession();
-    this.ip = this.getIp();
     this.healthCheck();
   }
 
@@ -56,8 +57,8 @@ export class CemsLogger {
       .catch(reason => console.error(reason));
   }
 
-  public sendLog(error: Error): void {
-    const errorLog = this.errorLogFromError(error);
+  public async sendLog(error: Error) {
+    const errorLog = await this.errorLogFromError(error);
 
     fetch(this.endPointUrl + "browserError", {
       method: "post",
@@ -72,24 +73,36 @@ export class CemsLogger {
       .catch(reason => console.error(reason));
   }
 
-  public errorLogFromError(error: Error) {
+  public async errorLogFromError(error: Error) {
     return {
       name: error.name,
       source: this.appName,
       email: this.email,
-      ip: this.ip,
+      ip: await this.getIp(),
       message: error.message,
-      stacktrace: error.stack,
+      stacktrace: await this.stackTraceFromError(error),
       timestamp: new Date().toLocaleString(),
       sessionInfo: this.session.getClientInfo()
     };
   }
 
-  private getIp(): string {
+  private async getIp() {
+    try {
+      const res = await fetch("https://api.ipify.org/?format=json");
+      const json = await res.json();
+      return json.ip;
+    } catch (e) {
+      console.error(e);
+    }
+    /*
     const request = new XMLHttpRequest();
     request.open("GET", "https://api.ipify.org/?format=json", false); // `false` makes the request synchronous
     request.send(null);
-    const json = JSON.parse(request.responseText);
-    return json.ip;
+    const json = JSON.parse(request.responseText);*/
+  }
+
+  private async stackTraceFromError(error: Error) {
+    const stackFrames = await StackTrace.fromError(error);
+    return stackFrames;
   }
 }

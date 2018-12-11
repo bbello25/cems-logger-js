@@ -32,5 +32,9 @@
     "typedoc": "^0.13.0",
     "typescript": "^3.2.1",
     "uglify-js": "^3.4.9"
+  },
+  "dependencies": {
+    "@types/stacktrace-js": "0.0.32",
+    "stacktrace-js": "^2.0.0"
   }
 }
