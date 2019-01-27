@@ -1,3 +1,4 @@
+import * as Convert from "convert-source-map";
 import * as StackTrace from "stacktrace-js";
 import { CemsSession } from "./CemsSession";
 import { InitializationError } from "./InitializationError";
@@ -79,7 +80,7 @@ export class CemsLogger {
       email: this.email,
       ip: await this.getIp(),
       message: error.message,
-      stacktrace: await this.stackTraceFromError(error),
+      stacktrace: error.stack,
       timestamp: new Date().toLocaleString(),
       sessionInfo: this.session.getClientInfo()
     };
@@ -102,6 +103,9 @@ export class CemsLogger {
 
   private async stackTraceFromError(error: Error) {
     const stackFrames = await StackTrace.fromError(error);
+    stackFrames.forEach(element => {
+      console.log(element);
+    });
     return stackFrames;
   }
 }

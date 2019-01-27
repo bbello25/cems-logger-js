@@ -34,7 +34,9 @@
     "uglify-js": "^3.4.9"
   },
   "dependencies": {
+    "@types/convert-source-map": "^1.5.1",
     "@types/stacktrace-js": "0.0.32",
+    "convert-source-map": "^1.6.0",
     "stacktrace-js": "^2.0.0"
   }
 }
