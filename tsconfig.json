@@ -3,7 +3,10 @@
     "module": "commonjs",
     "target": "es2015",
     "declaration": true,
-    "outDir": "./dist"
+    "sourceMap": true,
+    "declarationMap": true,
+    "outDir": "./dist",
+    "lib": ["esnext", "es2015", "dom"]
   },
   "include": ["src/**/*"]
 }

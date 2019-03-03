@@ -2,26 +2,26 @@ import SessionStorageHistoryQueue from './SessionStorageHistoryQueue';
 
 export default class BrowserSession {
   private sessionId: string = 'unknown';
-  private readonly urlsHistory: SessionStorageHistoryQueue<PopStateEvent>;
+  // private readonly urlsHistory: SessionStorageHistoryQueue<PopStateEvent>;
   private readonly eventsHistory: SessionStorageHistoryQueue<IMouseEvent>;
 
   constructor(urlHistoryLimit: number = 5, eventHistoryLimit: number = 10) {
-    this.urlsHistory = new SessionStorageHistoryQueue(
-      urlHistoryLimit,
-      'urlsHistory'
-    );
+    // this.urlsHistory = new SessionStorageHistoryQueue(
+    //   urlHistoryLimit,
+    //   'urlsHistory'
+    // );
     this.eventsHistory = new SessionStorageHistoryQueue(
       eventHistoryLimit,
       'eventsHistory'
     );
     this.registerClickEventHandler();
-    this.registerHistoryCHangeEventHandler();
+    // this.registerHistoryCHangeEventHandler();
   }
 
   public get() {
     return {
       sessionId: this.sessionId,
-      urlsHistory: this.urlsHistory.getHistory(),
+      // urlsHistory: this.urlsHistory.getHistory(),
       eventsHistory: this.eventsHistory.getHistory()
     };
   }
@@ -42,13 +42,6 @@ export default class BrowserSession {
         detail: event.detail
       };
       this.eventsHistory.addItem(e);
-    });
-  }
-
-  private registerHistoryCHangeEventHandler() {
-    // @ts-ignore
-    document.addEventListener('popstate', (event: PopStateEvent) => {
-      this.urlsHistory.addItem(event);
     });
   }
 }

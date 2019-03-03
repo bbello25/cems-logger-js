@@ -1,5 +1,3 @@
-import * as Convert from 'convert-source-map';
-import * as StackTrace from 'stacktrace-js';
 import BrowserSession from './BrowserSession';
 import { CemsSession } from './CemsSession';
 import { InitializationError } from './InitializationError';

@@ -1,2 +1,1 @@
-import { CemsLogger } from "./CemsLogger";
-export default CemsLogger;
+export { CemsLogger } from './CemsLogger';

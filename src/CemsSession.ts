@@ -1,13 +1,13 @@
-import { BrowserInfo } from "./BrowserInfo";
+import { BrowserInfo } from './BrowserInfo';
 
 export class CemsSession {
-  private sid: string = "unknown";
+  private sid: string = 'unknown';
   private sessionStartTime: Date;
   private browserProperties: BrowserInfo;
   private screenProperties: any;
   constructor() {
     if (document.cookie) {
-      const res = document.cookie.match("sid=([^;]*)");
+      const res = document.cookie.match('sid=([^;]*)');
       if (res) {
         this.sid = res[1];
       }
