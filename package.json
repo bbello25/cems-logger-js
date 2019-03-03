@@ -2,15 +2,16 @@
   "name": "@bbellovic/cems-logger-js",
   "version": "1.6.1",
   "description": "",
-  "main": "dist/cjs/index.js",
-  "typings": "dist/cjs/index.d.ts",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
     "build": "npm run build:es2015 && npm run build:esm && npm run build:cjs && npm run build:umd && npm run build:umd:min",
     "build:es2015": "tsc --module es2015 --target es2015 --outDir dist/es2015",
     "build:esm": "tsc --module es2015 --target es5 --outDir dist/esm",
     "build:cjs": "tsc --module commonjs --target es5 --outDir dist/cjs",
     "build:umd": "rollup dist/esm/index.js --format umd --name CemsLogger --sourceMap --output dist/umd/CemsLogger.js",
-    "build:umd:min": "cd dist/umd && uglifyjs --compress --mangle  --comments --o CemsLogger.min.js -- CemsLogger.js && gzip CemsLogger.min.js output=CemsLogger.min.js.gz"
+    "build:umd:min": "cd dist/umd && uglifyjs --compress --mangle  --comments --o CemsLogger.min.js -- CemsLogger.js && gzip CemsLogger.min.js output=CemsLogger.min.js.gz",
+    "minify": "uglifyjs demo/main.js -o main.min.js --source-map 'url=main.min.js.map'"
   },
   "files": [
     "dist"

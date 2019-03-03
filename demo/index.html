@@ -5,19 +5,9 @@
     <title>Demo</title>
   </head>
   <body>
-    <script src="./node_modules/@bbellovic/cems-logger-js/dist/umd/CemsLogger.js"></script>
-    <script>
-      const logger = CemsLogger.initLogger({
-        endPointUrl: 'https://cems.sde.cz:5443/',
-        apiKey: 'oifkk97xcl',
-        appName: 'demo app',
-        email: 'b.bellovic@gmail.com'
-      })
-      try {
-        throw new Error('Demo app')
-      } catch (e) {
-        logger.sendLog(e)
-      }
-    </script>
+    <h1>Test</h1>
+    <a href="about.html">About</a>
+    <script src="../dist/umd/CemsLogger.js"></script>
+    <script src="main.min.js"></script>
   </body>
 </html>

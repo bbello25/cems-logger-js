@@ -1,3 +1,9 @@
-/src
-/node_modules
-package-lock.json
+src
+node_modules
+doc
+tsconfig.json
+tslint.json
+.idea/
+.sonarlint/
+.vscode
+demo/
