@@ -1,4 +1,4 @@
-import { BrowserInfo } from './BrowserInfo';
+import BrowserInfo  from './BrowserInfo';
 
 export class CemsSession {
   private sid: string = 'unknown';

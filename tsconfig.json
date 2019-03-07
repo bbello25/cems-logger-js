@@ -1,12 +1,11 @@
 {
   "compilerOptions": {
-    "module": "commonjs",
-    "target": "es2015",
-    "declaration": true,
-    "sourceMap": true,
-    "declarationMap": true,
-    "outDir": "./dist",
-    "lib": ["esnext", "es2015", "dom"]
+    "module": "es6",
+    "target": "es6",
+    "allowSyntheticDefaultImports": true,
+    "lib": ["es6", "es2015", "dom"]
   },
-  "include": ["src/**/*"]
+  "include": ["src/**/*"],
+  "exclude": ["./node_modules", "./build"]
+
 }

@@ -1,4 +1,4 @@
-export class BrowserInfo {
+export default class BrowserInfo {
   public static browserProperties() {
     const agent = header.join(' ');
     return {
