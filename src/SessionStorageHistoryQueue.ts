@@ -28,7 +28,7 @@ export default class SessionStorageHistoryQueue<T> {
 
   public getHistory(): T[] {
     let history: T[] = [];
-    const historyString = sessionStorage.getItem(name);
+    const historyString = sessionStorage.getItem(this.queueName);
     if (historyString) {
       history = JSON.parse(historyString);
     }
