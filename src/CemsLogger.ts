@@ -1,5 +1,4 @@
 import BrowserSession from './BrowserSession'
-import { CemsSession } from './CemsSession'
 import { InitializationError } from './InitializationError'
 
 let instance: CemsLogger
@@ -25,7 +24,6 @@ export class CemsLogger {
   private readonly appName: string
   private readonly email: string
   private ip!: string
-  private session: CemsSession
   private browserSession: BrowserSession
 
   private constructor(options: any) {
@@ -37,7 +35,6 @@ export class CemsLogger {
     this.apiKey = options.apiKey
     this.appName = options.appName || defaultOptions.appName
     this.email = options.email || undefined
-    this.session = new CemsSession()
     this.browserSession = new BrowserSession()
     this.healthCheck()
   }
@@ -86,14 +83,13 @@ export class CemsLogger {
   public async errorLogFromError(error: Error) {
     return {
       name: error.name,
-
       source: this.appName,
       email: this.email,
       ip: await this.getIp(),
       message: error.message,
       stacktrace: error.stack,
       timestamp: new Date().toLocaleString(),
-      sessionInfo: this.session.getClientInfo()
+      sessionInfo: this.browserSession.getClientInfo()
     }
   }
 

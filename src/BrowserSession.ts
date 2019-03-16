@@ -1,7 +1,12 @@
 import SessionStorageHistoryQueue from './SessionStorageHistoryQueue';
+import BrowserInfo  from './BrowserInfo';
 
 export default class BrowserSession {
   private sessionId: string = 'unknown';
+  private sessionStartTime: Date;
+  private browserProperties: BrowserInfo;
+  private screenProperties: any;
+  
   // private readonly urlsHistory: SessionStorageHistoryQueue<PopStateEvent>;
   private readonly eventsHistory: SessionStorageHistoryQueue<IMouseEvent>;
 
@@ -16,14 +21,10 @@ export default class BrowserSession {
     );
     this.registerClickEventHandler();
     // this.registerHistoryCHangeEventHandler();
-  }
 
-  public get() {
-    return {
-      sessionId: this.sessionId,
-      // urlsHistory: this.urlsHistory.getHistory(),
-      eventsHistory: this.eventsHistory.getHistory()
-    };
+    this.sessionStartTime = new Date();
+    this.browserProperties = BrowserInfo.browserProperties();
+    this.screenProperties = this.getscreenProperties();
   }
 
   public updateSessionId(sessionId: string) {
@@ -32,8 +33,14 @@ export default class BrowserSession {
 
   private registerClickEventHandler() {
     document.addEventListener('click', (event: MouseEvent) => {
+
+      const targetElement = event.target as any;
       const e: IMouseEvent = {
-        target: event.target ? event.target.toString() : null,
+        target: {
+          elementName:targetElement.localName,
+          id: targetElement.id,
+          name: targetElement.name,
+      },
         timestamp: Date.now(),
         altKey: event.altKey,
         ctrlKey: event.ctrlKey,
@@ -44,10 +51,36 @@ export default class BrowserSession {
       this.eventsHistory.addItem(e);
     });
   }
+
+  
+  public getscreenProperties(): any {
+    return {
+      screenScreenW: window.screen.width,
+      screenScreenH: window.screen.height,
+      sizeInnerW: window.innerWidth,
+      sizeInnerH: window.innerHeight,
+      screenAvailW: window.screen.availWidth,
+      screenAvailH: window.screen.availHeight,
+      scrColorDepth: window.screen.colorDepth,
+      scrPixelDepth: window.screen.pixelDepth
+    };
+  }
+
+  public getClientInfo(): any {
+    const currentTime = new Date();
+    const sesionDuration = (currentTime.getTime() - this.sessionStartTime.getTime()) / 1000;
+    return {
+      sessionId: this.sessionId,
+      sessionDuration: sesionDuration,
+      browserProperties: this.browserProperties,
+      screenProperties: this.screenProperties,
+      eventsHistory: this.eventsHistory.getHistory()
+    };
+  }
 }
 
 interface IMouseEvent {
-  target: string | null;
+  target: object;
   readonly altKey: boolean;
   readonly metaKey: boolean;
   readonly ctrlKey: boolean;
