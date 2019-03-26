@@ -23,7 +23,6 @@ export default class SessionStorageHistoryQueue<T> {
     queue.push(item);
     const queueJson = JSON.stringify(queue);
     sessionStorage.setItem(this.queueName, queueJson);
-    console.debug(queueJson);
   }
 
   public getHistory(): T[] {
