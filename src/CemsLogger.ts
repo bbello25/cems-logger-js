@@ -87,9 +87,10 @@ export class CemsLogger {
       email: this.email,
       ip: await this.getIp(),
       message: error.message,
-      stacktrace: error.stack,
-      timestamp: new Date().toLocaleString(),
-      sessionInfo: this.browserSession.getClientInfo()
+      stackTrace: error.stack,
+      timestamp: Math.floor(Date.now() /1000),
+      sessionInfo: JSON.stringify(this.browserSession.getClientInfo()),
+      progLanguage: "javascript"
     }
   }
 
