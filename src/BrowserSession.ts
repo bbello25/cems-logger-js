@@ -1,30 +1,18 @@
 import SessionStorageHistoryQueue from './SessionStorageHistoryQueue';
-import BrowserInfo  from './BrowserInfo';
 
 export default class BrowserSession {
-  private sessionId: string = 'unknown';
-  private sessionStartTime: Date;
-  private browserProperties: BrowserInfo;
-  private screenProperties: any;
-  
-  // private readonly urlsHistory: SessionStorageHistoryQueue<PopStateEvent>;
-  private readonly eventsHistory: SessionStorageHistoryQueue<IMouseEvent>;
+  public sessionId: string = 'unknown';
 
-  constructor(urlHistoryLimit: number = 5, eventHistoryLimit: number = 10) {
-    // this.urlsHistory = new SessionStorageHistoryQueue(
-    //   urlHistoryLimit,
-    //   'urlsHistory'
-    // );
+  private eventsHistory: SessionStorageHistoryQueue<IMouseEvent>;
+  private sessionStartTime: Date;
+
+  constructor(eventHistoryLimit: number = 10) {
     this.eventsHistory = new SessionStorageHistoryQueue(
       eventHistoryLimit,
       'eventsHistory'
     );
     this.registerClickEventHandler();
-    // this.registerHistoryCHangeEventHandler();
-
     this.sessionStartTime = new Date();
-    this.browserProperties = BrowserInfo.browserProperties();
-    this.screenProperties = this.getscreenProperties();
   }
 
   public updateSessionId(sessionId: string) {
@@ -32,16 +20,17 @@ export default class BrowserSession {
   }
 
   private registerClickEventHandler() {
-    document.addEventListener('click', (event: MouseEvent) => {
+    // @ts-ignore 
+    document.addEventListener('click', (event: IMouseEvent) => {
 
       const targetElement = event.target as any;
       const e: IMouseEvent = {
         target: {
-          elementName:targetElement.localName,
+          elementName: targetElement.localName,
           id: targetElement.id,
           name: targetElement.name,
-      },
-        timestamp: Date.now(),
+        },
+        timestamp: new Date(),
         altKey: event.altKey,
         ctrlKey: event.ctrlKey,
         shiftKey: event.shiftKey,
@@ -52,39 +41,42 @@ export default class BrowserSession {
     });
   }
 
-  
-  public getscreenProperties(): any {
-    return {
-      screenScreenW: window.screen.width,
-      screenScreenH: window.screen.height,
-      sizeInnerW: window.innerWidth,
-      sizeInnerH: window.innerHeight,
-      screenAvailW: window.screen.availWidth,
-      screenAvailH: window.screen.availHeight,
-      scrColorDepth: window.screen.colorDepth,
-      scrPixelDepth: window.screen.pixelDepth
-    };
+  public getSessionDurration(): number {
+    const currentTime = new Date();
+    return (currentTime.getTime() - this.sessionStartTime.getTime()) / 1000;
   }
 
-  public getClientInfo(): any {
-    const currentTime = new Date();
-    const sesionDuration = (currentTime.getTime() - this.sessionStartTime.getTime()) / 1000;
-    return {
-      sessionId: this.sessionId,
-      sessionDuration: sesionDuration,
-      browserProperties: this.browserProperties,
-      screenProperties: this.screenProperties,
-      eventsHistory: this.eventsHistory.getHistory()
-    };
+  public getSessionEventHistory(): IMouseEvent[] {
+    return this.eventsHistory.getHistory();
+  }
+
+  public getCurrentBrowserSessionState() {
+    let state: BrowserSessionState = new BrowserSessionState();
+    state.sessionId = this.sessionId;
+    state.sessionDuration = this.getSessionDurration();
+    state.eventHistory = this.getSessionEventHistory();
+    return state;
   }
 }
 
-interface IMouseEvent {
+export class BrowserSessionState {
+  sessionId: string
+  eventHistory: IMouseEvent[]
+  sessionDuration: number;
+}
+
+export interface IEventTarget {
+  elementName: string
+  id: string
+  name: string
+}
+
+export interface IMouseEvent {
   target: object;
   readonly altKey: boolean;
   readonly metaKey: boolean;
   readonly ctrlKey: boolean;
   readonly shiftKey: boolean;
   readonly detail: number;
-  readonly timestamp: number;
+  readonly timestamp: Date;
 }

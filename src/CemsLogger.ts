@@ -1,11 +1,14 @@
 import BrowserSession from './BrowserSession'
 import { InitializationError } from './InitializationError'
+import { JavascripLog } from './JavascriptLog.model';
+import { BrowserInfo } from './BrowserInfo.model';
 
 let instance: CemsLogger
 
 const defaultOptions = {
   apiKey: '',
   appName: 'unknown',
+  appVersion: "1.0.0",
   email: '',
   endPointUrl: 'http://localhost:5000/'
 }
@@ -22,8 +25,9 @@ export class CemsLogger {
   private readonly endPointUrl: string
   private readonly apiKey: string
   private readonly appName: string
+  private readonly appVersion: string
   private readonly email: string
-  private ip!: string
+  private ip: string
   private browserSession: BrowserSession
 
   private constructor(options: any) {
@@ -38,10 +42,6 @@ export class CemsLogger {
     this.browserSession = new BrowserSession()
     this.healthCheck()
   }
-
-  /**
-   *  healthCheck function
-   */
 
   public healthCheck(): void {
     this.getIp().then((ip: string) => {
@@ -62,7 +62,7 @@ export class CemsLogger {
   }
 
   public async sendLog(error: Error) {
-    const errorLog = await this.errorLogFromError(error)
+    const log = this.logFromError(error)
 
     fetch(this.endPointUrl + 'browserError', {
       method: 'post',
@@ -74,28 +74,28 @@ export class CemsLogger {
         'Access-Control-Allow-Methods': '*',
         'Access-Control-Allow-Headers': '*'
       },
-      body: JSON.stringify(errorLog)
+      body: JSON.stringify(log)
     })
-      .then(res => 1 === 1)
+      .then()
       .catch(reason => console.error(reason))
   }
 
-  public async errorLogFromError(error: Error) {
-    return {
-      name: error.name,
-      source: this.appName,
-      email: this.email,
-      ip: await this.getIp(),
-      message: error.message,
-      stackTrace: error.stack,
-      timestamp: Math.floor(Date.now() /1000),
-      sessionInfo: JSON.stringify(this.browserSession.getClientInfo()),
-      progLanguage: "javascript"
-    }
-  }
+  public logFromError(error: Error): JavascripLog {
+    let log: JavascripLog = new JavascripLog();
 
-  public throwError() {
-    throw new Error('Erro in typescript file')
+    log.javascriptSessionInfo = this.browserSession.getCurrentBrowserSessionState();
+
+    log.javascriptApplicationInfo.applicationName = this.appName;
+    log.javascriptApplicationInfo.applicationVersion = this.appVersion;
+    log.javascriptApplicationInfo.email = this.email;
+    log.javascriptApplicationInfo.ipAddress = this.ip;
+
+    log.exceptionDetails.message = error.message;
+    log.exceptionDetails.rawStackTrace = error.stack;
+    log.exceptionDetails.source = "wtf";
+    log.exceptionDetails.type = error.name;
+
+    return log;
   }
 
   private async getIp() {
@@ -106,10 +106,5 @@ export class CemsLogger {
     } catch (e) {
       console.error(e)
     }
-    /*
-    const request = new XMLHttpRequest();
-    request.open("GET", "https://api.ipify.org/?format=json", false); // `false` makes the request synchronous
-    request.send(null);
-    const json = JSON.parse(request.responseText);*/
   }
 }
