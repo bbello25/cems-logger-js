@@ -64,7 +64,7 @@ export class CemsLogger {
   public async sendLog(error: Error) {
     const log = this.logFromError(error)
 
-    fetch(this.endPointUrl + 'browserError', {
+    fetch(this.endPointUrl + 'javascript', {
       method: 'post',
       headers: {
         Accept: 'application/json, text/plain, */*',
