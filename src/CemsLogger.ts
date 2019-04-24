@@ -92,7 +92,7 @@ export class CemsLogger {
 
     log.exceptionDetails.message = error.message;
     log.exceptionDetails.rawStackTrace = error.stack;
-    log.exceptionDetails.source = "wtf";
+    log.exceptionDetails.source = "";
     log.exceptionDetails.type = error.name;
 
     return log;
