@@ -41,7 +41,7 @@ export default class BrowserSession {
     });
   }
 
-  public getSessionDurration(): number {
+  public getSessionDuration(): number {
     const currentTime = new Date();
     return (currentTime.getTime() - this.sessionStartTime.getTime()) / 1000;
   }
@@ -53,15 +53,15 @@ export default class BrowserSession {
   public getCurrentBrowserSessionState() {
     let state: BrowserSessionState = new BrowserSessionState();
     state.sessionId = this.sessionId;
-    state.sessionDuration = this.getSessionDurration();
+    state.sessionDuration = this.getSessionDuration();
     state.eventHistory = this.getSessionEventHistory();
     return state;
   }
 }
 
 export class BrowserSessionState {
-  sessionId: string
-  eventHistory: IMouseEvent[]
+  sessionId: string;
+  eventHistory: IMouseEvent[];
   sessionDuration: number;
 }
 
@@ -72,7 +72,7 @@ export interface IEventTarget {
 }
 
 export interface IMouseEvent {
-  target: object;
+  target: IEventTarget;
   readonly altKey: boolean;
   readonly metaKey: boolean;
   readonly ctrlKey: boolean;

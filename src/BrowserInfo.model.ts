@@ -1,20 +1,20 @@
 export class BrowserInfo {
-  public osName: string
-  public osVersion: any
-  public browserName: string
-  public browserVersion: any
-  public browserUserAgent: string
-  public browserLanguage: string
-  public browserIsOnline: boolean
-  public browserPlatform: string
-  public javaEnabled: boolean
-  public dataCookiesEnabled: boolean
-  public dataCookies: string
-  public dataStorage: string
+  public osName: string;
+  public osVersion: any;
+  public browserName: string;
+  public browserVersion: any;
+  public browserUserAgent: string;
+  public browserLanguage: string;
+  public browserIsOnline: boolean;
+  public browserPlatform: string;
+  public javaEnabled: boolean;
+  public dataCookiesEnabled: boolean;
+  public dataCookies: string;
+  public dataStorage: string;
 
   public screenScreenW: number;
   public screenScreenH: number;
-  public sizeInnerW: number
+  public sizeInnerW: number;
   public sizeInnerH: number;
   public screenAvailW: number;
   public screenAvailH: number;
